@@ -1,0 +1,8 @@
+prefix=/home/hai/game_planner_ws/devel
+
+Name: geometry
+Description: Description of geometry
+Version: 0.1.0
+Cflags: -I/home/hai/game_planner_ws/src/ros_game_planner/common/geometry/include
+Libs: -L${prefix}/lib -lgeometry
+Requires: roscpp

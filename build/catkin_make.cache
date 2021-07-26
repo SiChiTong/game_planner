@@ -1,0 +1,2 @@
+ros_game_planner/common/geometry:ros_game_planner/game_planner:ros_game_planner/open_simulator:ros_game_planner/simulator
+-DCATKIN_DEVEL_PREFIX=/home/hai/game_planner_ws/devel -DCMAKE_INSTALL_PREFIX=/home/hai/game_planner_ws/install -G Unix Makefiles

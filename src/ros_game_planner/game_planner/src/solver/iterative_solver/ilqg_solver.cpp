@@ -47,8 +47,8 @@ namespace game_planner
                            const std::shared_ptr<SolverLog>& solver_log)
 
     {
-        assert(players_input_cov.size() == problem_->getNumPlayers());
-        assert(players_observation_cov.size() == problem_->getNumPlayers());
+        //assert(players_input_cov.size() == problem_->getNumPlayers());
+        //assert(players_observation_cov.size() == problem_->getNumPlayers());
 
         // Things to keep track of during each iteration.
         size_t num_iterations = 0;
@@ -144,8 +144,8 @@ namespace game_planner
             assert(velocity_dim>=0);
             Eigen::MatrixXd I_eps = Eigen::MatrixXd::Constant(player_xdim, player_xdim, 1e-10);
 
-            assert(input_cov[player_id].rows() == linear_dyn[0].Bs[player_id].rows());
-            assert(input_cov[player_id].cols() == linear_dyn[0].Bs[player_id].cols());
+            assert(input_covs[player_id].rows() == linear_dyn[0].Bs[player_id].rows());
+            assert(input_covs[player_id].cols() == linear_dyn[0].Bs[player_id].cols());
 
             for(int i=0; i<N-1; ++i)
             {

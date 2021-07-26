@@ -21,7 +21,7 @@ catkin_make
 #### II. Start Simulation
 ```
 source devel/setup.bash
-roslaunch game_planner game_planner.launch
+roslaunch  open_simulator game_planner.launch
 ```
 
 #### III. Run Test Code
