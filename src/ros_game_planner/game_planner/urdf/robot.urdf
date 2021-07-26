@@ -1,0 +1,25 @@
+<robot name="robot">
+    <material name="red">
+        <color rgba="1.0 0.0 0.0 2.0"/>
+    </material>
+    <material name="green">
+        <color rgba="0.0 1.0 0.0 2.0"/>
+    </material>
+
+    <link name="world"/>
+
+    <joint name="base_joint" type="floating">
+        <parent link="world"/>
+        <child  link="base_link"/>
+    </joint>
+    <link name="base_link">
+        <visual>
+            <origin rpy="0 0 0" xyz="0 0 0.05"/>
+            <geometry>
+                <!--box size="1.5 1.0 1.0" /-->
+                <sphere radius="0.5" />
+            </geometry>
+            <material name="red"/>
+        </visual>
+    </link>
+</robot>

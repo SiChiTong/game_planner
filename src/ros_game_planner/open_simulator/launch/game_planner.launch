@@ -1,0 +1,17 @@
+<launch>
+    <arg name="vehicle1_pose" default="/vehicle1_pose" />
+    <arg name="vehicle2_pose" default="/vehicle2_pose" />
+    <arg name="vehicle1_base_link" default="base_link" />
+    <arg name="model" default="$(find game_planner)/urdf/robot.urdf" />
+    <param name="robot_description" command="$(find xacro)/xacro.py $(arg model)" />
+
+    <node name="rviz" pkg="rviz" type="rviz" args="-d $(find open_simulator)/rviz/game_planner.rviz" required="true" />
+
+    <node name="game_planner" pkg="open_simulator" type="game_planner_node" output="screen">
+        <param name="vehicle1_pose" value="$(arg vehicle1_pose)" />
+        <param name="vehicle2_pose" value="$(arg vehicle2_pose)" />
+        <param name="vehicle1_base_link" value="$(arg vehicle1_base_link)" />
+    </node>
+
+    <node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher" />
+</launch>

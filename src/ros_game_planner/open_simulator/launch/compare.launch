@@ -1,0 +1,17 @@
+<launch>
+    <arg name="ilq_pose" default="/ilq_pose" />
+    <arg name="ilqg_pose" default="/ilqg_pose" />
+    <arg name="ilq_base_link" default="base_link" />
+    <arg name="model" default="$(find game_planner)/urdf/robot.urdf" />
+    <param name="robot_description" command="$(find xacro)/xacro.py $(arg model)" />
+
+    <node name="rviz" pkg="rviz" type="rviz" args="-d $(find open_simulator)/rviz/compare.rviz" required="true" />
+
+    <node name="compare" pkg="open_simulator" type="compare_node" output="screen">
+        <param name="ilq_pose" value="$(arg ilq_pose)" />
+        <param name="ilqg_pose" value="$(arg ilqg_pose)" />
+        <param name="ilq_base_link" value="$(arg ilq_base_link)" />
+    </node>
+
+    <node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher" />
+</launch>
