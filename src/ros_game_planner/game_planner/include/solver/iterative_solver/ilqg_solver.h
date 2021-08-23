@@ -38,6 +38,7 @@
 // Class For Iterative Linear Quadratic Gaussian Solver
 //
 ///////////////////////////////////////////////////////////////////////////////
+//checked:1, q
 #ifndef GAME_PLANNER_ILQG_SOLVER_H
 #define GAME_PLANNER_ILQG_SOLVER_H
 

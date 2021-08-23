@@ -43,7 +43,7 @@
 // i.e. delta u[ii] = -P[ii] delta x - alphas[ii]
 //
 ///////////////////////////////////////////////////////////////////////////////
-//checked: 2
+//checked: 2, q
 #ifndef GAME_PLANNER_STRATEGY_H
 #define GAME_PLANNER_STRATEGY_H
 

@@ -4,7 +4,7 @@
 // time.
 //
 ///////////////////////////////////////////////////////////////////////////////
-//checked: 2
+//checked: 2, q
 #ifndef GAME_PLANNER_LINEAR_DYNAMICS_H
 #define GAME_PLANNER_LINEAR_DYNAMICS_H
 

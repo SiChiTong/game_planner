@@ -41,6 +41,7 @@
 // https://bjack205.github.io/assets/ALTRO.pdf.
 //
 ///////////////////////////////////////////////////////////////////////////////
+//checked: 1, q
 #ifndef GAME_PLANNER_AUGMENTED_LAGRANGIAN_SOLVER_H
 #define GAME_PLANNER_AUGMENTED_LAGRANGIAN_SOLVER_H
 

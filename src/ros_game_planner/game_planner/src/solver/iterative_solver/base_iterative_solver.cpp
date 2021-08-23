@@ -38,7 +38,7 @@
 // Base Class For Iterative Solver
 //
 ///////////////////////////////////////////////////////////////////////////////
-//checked: 1
+//checked: 2, q
 
 #include "solver/iterative_solver/base_iterative_solver.h"
 
@@ -134,7 +134,9 @@ namespace game_planner
                 const auto& costate = costates[kk][ii];
                 const auto& neg_ui = strategies[ii].alphas[kk];  // NOTE: could also evaluate delta u on
                 // delta x to be more precise.
+                
 
+                //Question: what is the meaning of right hand side?
                 // Handle control contribution.
                 expected_decrease -= neg_ui.transpose() * quad.control_.at(ii).hess_ * (quad.control_.at(ii).grad_ - lin.Bs[ii].transpose() * costate);
             }
@@ -142,6 +144,8 @@ namespace game_planner
         return expected_decrease;
     }
 
+
+    //Question: What is merit function here?
     double BaseIterativeSolver::computeMeritFunction(const OperatingPoint& current_op,
                                                      const std::vector<std::vector<QuadraticCostApproximation>>& cost_quadraticization)
     {
@@ -154,7 +158,7 @@ namespace game_planner
         for (size_t kk = 0; kk < cost_quadraticization.size(); kk++)
         {
             for (unsigned int ii = 0; ii < problem_->getNumPlayers(); ii++)
-            {
+            {    //Question: why we add the norms of gradients?
                 const auto& quad = cost_quadraticization[kk][ii];
                 merit += quad.control_.at(ii).grad_.squaredNorm();
 

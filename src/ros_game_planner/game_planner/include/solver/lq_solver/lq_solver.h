@@ -39,7 +39,7 @@
 // Base Class For LQ Solver (Nash and Stackelberg)
 //
 ///////////////////////////////////////////////////////////////////////////////
-//checked: 1
+//checked: 1,q
 #ifndef GAME_PLANNER_LQ_SOLVER_H
 #define GAME_PLANNER_LQ_SOLVER_H
 

@@ -1,0 +1,21 @@
+{
+  "configurations": [
+    {
+      "browse": {
+        "databaseFilename": "",
+        "limitSymbolsToIncludedHeaders": true
+      },
+      "includePath": [
+        "/opt/ros/melodic/include/**",
+        "/home/hai/ros_tutorial/src/beginner_tutorials/include/**",
+        "/home/hai/game_planner_ws/src/ros_game_planner/game_planner/include/**",
+        "/home/hai/game_planner_ws/src/ros_game_planner/common/geometry/include/**",
+        "/home/hai/game_planner_ws/src/ros_game_planner/open_simulator/include/**",
+        "/home/hai/game_planner_ws/src/ros_game_planner/simulator/include/**",
+        "/usr/include/**"
+      ],
+      "name": "ROS"
+    }
+  ],
+  "version": 4
+}

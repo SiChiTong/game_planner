@@ -38,6 +38,7 @@
 // Class For Iterative Linear Quadratic Gaussian Solver
 //
 ///////////////////////////////////////////////////////////////////////////////
+//checked: 1, q
 
 #include "solver/iterative_solver/ilqg_solver.h"
 
@@ -152,11 +153,15 @@ namespace game_planner
                 const Eigen::MatrixXd A = linear_dyn[i].A.block(start_xdim, start_xdim, player_xdim, player_xdim);
                 const Eigen::MatrixXd B = linear_dyn[i].Bs[player_id];
 
+                //Question: A: n_{player} x n_{player}, covariance: n x n, dimession mismatch? why mulitply B?
                 //Estimate
                 Eigen::MatrixXd cov_p = A * covariance[i] * A.transpose() + B * input_covs[player_id] * B.transpose();
 
                 //Update
                 double velocity = op.xs[i](start_xdim+velocity_dim);
+                //Question: Why we * std::pow(velocity,2)?
+              
+                 
                 Eigen::MatrixXd kalman_gain = cov_p * (cov_p + observe_covs[player_id] * std::pow(velocity,2)+I_eps).inverse();
                 covariance[i+1] = cov_p - kalman_gain*cov_p;
             }

@@ -38,7 +38,7 @@
 // Base Class For Iterative Solver
 //
 ///////////////////////////////////////////////////////////////////////////////
-//checked: 2
+//checked: 2,q
 #ifndef GAME_PLANNER_BASE_ITERATIVE_SOLVER_H
 #define GAME_PLANNER_BASE_ITERATIVE_SOLVER_H
 

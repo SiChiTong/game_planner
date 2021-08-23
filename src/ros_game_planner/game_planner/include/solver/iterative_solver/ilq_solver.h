@@ -38,7 +38,7 @@
 // Class For ILQR Solver
 //
 ///////////////////////////////////////////////////////////////////////////////
-//checked:
+//checked:1, q
 #ifndef GAME_PLANNER_ILQ_SOLVER_H
 #define GAME_PLANNER_ILQ_SOLVER_H
 

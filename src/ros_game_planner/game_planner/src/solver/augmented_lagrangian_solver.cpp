@@ -41,6 +41,7 @@
 // https://bjack205.github.io/assets/ALTRO.pdf.
 //
 ///////////////////////////////////////////////////////////////////////////////
+//checked:1 , q
 
 #include "solver/augmented_lagrangian_solver.h"
 

@@ -120,6 +120,7 @@ namespace game_planner
         // Initial Covariance
         const Eigen::MatrixXd Sig0_;
 
+        //Question: What are the input covariance and observation covariacne?
         // Input Covariance
         const std::vector<Eigen::MatrixXd> input_covs_;
 

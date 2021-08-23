@@ -38,6 +38,7 @@
 // Class For ILQR Solver
 //
 ///////////////////////////////////////////////////////////////////////////////
+//checked:1, q
 #include "solver/iterative_solver/ilq_solver.h"
 
 namespace game_planner
