@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite tests="1" failures="1" time="1" errors="0" name="gtest-ilqg_solver_test.xml">
+  <testcase name="test_ran" status="run" time="1" classname="Results">
+    <failure message="Unable to find test results for gtest-ilqg_solver_test.xml, test did not run.
+Expected results in /home/hai/game_planner_ws/build/test_results/game_planner/gtest-ilqg_solver_test.xml" type=""/>
+  </testcase>
+</testsuite>

@@ -70,7 +70,9 @@ namespace game_planner
         SolverParams iterative_solver_params_ = SolverParams();
 
         // For Augmented Lagrangian parameters.
-        ALIterativeeSolverType iterative_solver_type_ = ALIterativeeSolverType::ILQ;
+        //ALIterativeeSolverType iterative_solver_type_ = ALIterativeeSolverType::ILQ;
+        ALIterativeeSolverType iterative_solver_type_ = ALIterativeeSolverType::ILQG;
+
         double geometric_mu_scaling = 1.1;
         double geometric_mu_downscaling = 0.5;
         double geometric_lambda_downscaling = 0.5;
@@ -95,12 +97,14 @@ namespace game_planner
             if(solver_params.iterative_solver_type_ == ALIterativeeSolverType::ILQ)
             {
                 unconstrained_solver_ = std::make_unique<ILQSolver>(problem, solver_params.iterative_solver_params_);
+                std::cout<<"[1]solver is AL_ILQ"<<std::endl;
                 solver_name_ = "AL_ILQ";
             }
             else
             {
                 unconstrained_solver_ = std::make_unique<ILQGSolver>(problem, solver_params.iterative_solver_params_);
                 solver_name_ = "AL_ILQG";
+                std::cout<<"[2]solver is AL_ILQG"<<std::endl;
             }
         }
 

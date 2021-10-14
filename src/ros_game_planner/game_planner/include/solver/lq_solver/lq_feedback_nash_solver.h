@@ -124,7 +124,7 @@ namespace game_planner
         // will pre-allocate the memory for that equation and define these components
         // as Eigen::Refs.
 
-        //Eigen::Refs? Still don't understand much about it.  
+         
 
         Eigen::MatrixXd S_, X_, Y_;
         std::vector<Eigen::Ref<Eigen::MatrixXd>> Ps_;

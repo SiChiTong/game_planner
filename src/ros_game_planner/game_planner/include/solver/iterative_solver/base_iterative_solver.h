@@ -61,7 +61,8 @@ namespace game_planner
         // Linesearch parameters. If flag is set 'true', then applied initial alpha
         // scaling to all strategies and backs off geometrically at the given rate for
         // the specified number of steps.
-        bool linesearch = true;
+        //bool linesearch = true;
+        bool linesearch = false;
         double initial_alpha_scaling = 0.5;
         double geometric_alpha_scaling = 0.5;
         size_t max_backtracking_steps = 10;
@@ -86,6 +87,11 @@ namespace game_planner
         virtual ~BaseIterativeSolver() = default;
         virtual bool solve(const std::vector<Strategy>& initial_strategies,
                            const std::shared_ptr<SolverLog>& solver_log) = 0;
+        virtual bool solve(const OperatingPoint initial_op,
+                           const std::shared_ptr<SolverLog>& solver_log) = 0;
+
+        virtual bool solve(const OperatingPoint initial_op,
+                           const std::shared_ptr<SolverLog>& solver_log, size_t al_num_iter) = 0;
 
         // Accessors.
         Problem& getProblem() { return *problem_; }

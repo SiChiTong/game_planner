@@ -63,6 +63,14 @@ namespace game_planner
 
         virtual bool solve(const std::vector<Strategy>& initial_strategies,
                            const std::shared_ptr<SolverLog>& solver_log);
+        
+        //For warm start, we can give the op in last iteration as the initial guess
+        virtual bool solve(const OperatingPoint initial_op, const std::shared_ptr<SolverLog>& solver_log);
+
+
+        //For debugging
+        virtual bool solve(const OperatingPoint initial_op,
+                           const std::shared_ptr<SolverLog>& solver_log, size_t al_num_iter);
 
     protected:
         // Compute Total costs regarding the current trajectory

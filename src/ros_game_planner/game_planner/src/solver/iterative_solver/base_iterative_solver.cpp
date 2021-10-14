@@ -63,9 +63,11 @@ namespace game_planner
             operating_point.xs[kk] = x;
 
             // Compute and record control for each player.
+            
             for (unsigned int jj = 0; jj < problem_->getNumPlayers(); jj++)
             {
                 const auto& strategy = current_strategies[jj];
+                
                 current_us[jj] = strategy(kk, delta_x, last_us[jj]);
             }
 
@@ -163,6 +165,7 @@ namespace game_planner
                 merit += quad.control_.at(ii).grad_.squaredNorm();
 
                 // Don't accumulate state derivs at t0 since x0 can't change.
+                //Question: Should we use the chain rule, to calculate the gradient of state w.r.t the control?
                 if (kk > 0)
                     merit += quad.state_.grad_.squaredNorm();
             }

@@ -57,6 +57,11 @@ namespace game_planner
                                   : value <= constants::kSmallNumber;
         }
 
+        std::string get_name() const
+        {
+            return name_;
+        }
+
         static double& getGlobalMu() { return mu_; }
         static void scaleMu(const double& scale) { mu_ *= scale; }
 

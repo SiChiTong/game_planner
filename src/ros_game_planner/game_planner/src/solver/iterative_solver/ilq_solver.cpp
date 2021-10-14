@@ -209,4 +209,141 @@ namespace game_planner
             }
         }
     }
+
+    //Warm Start Version solve.
+     bool ILQSolver::solve(const OperatingPoint initial_op,
+                          const std::shared_ptr<SolverLog>& solver_log)
+    {
+        // Things to keep track of during each iteration.
+        size_t num_iterations = 0;
+        bool has_converged = false;
+        double elapsed = 0.0;
+
+        // 1. Obtain Initial Operating Point (Initial xs[0] is already set)
+        OperatingPoint current_operating_point = initial_op;
+        Eigen::VectorXd x0 = problem_->getInitialState();
+
+        // 2. Forward(calculate xs from time 1 to the end)
+        //current_operating_point = forward(current_operating_point, initial_strategies);
+
+        // 3. Compute total costs for initial trajectory
+        std::vector<double> total_costs = computeTotalCosts(current_operating_point);
+
+        // 4. Logging initial trajectory
+        //solver_log->addSolverIterate(current_operating_point, initial_strategies, total_costs, elapsed, has_converged);
+
+        // Maintain delta_xs and costates for linesearch.
+        std::vector<Eigen::VectorXd> delta_xs;
+        std::vector<std::vector<Eigen::VectorXd>> costates;
+        std::vector<Strategy> current_strategies;
+
+        // 5. Quadraticize costs before first iteration.
+        std::vector<std::vector<QuadraticCostApproximation>> cost_quad = computeCostQuadraticization(current_operating_point);
+
+        // 6. Linearize dynamics about the new operating point
+        std::vector<LinearDynamics> linear_dyn = computeLinearization(current_operating_point);
+
+        //Main loop
+        while(num_iterations < solver_params_.max_solver_iters && !has_converged)
+        {
+            // Start loop timer.
+            timer_.Tic();
+
+            // New iteration.
+            num_iterations++;
+
+            // 7. Solve LQ game.
+            current_strategies = lq_solver_->solve(linear_dyn, cost_quad, x0, &delta_xs, &costates);
+
+            // 8. Do Line Search (Update linear_dyn, cost_quad)
+            if (!doLineSearch(delta_xs, costates, linear_dyn, cost_quad,
+                              current_strategies, current_operating_point, has_converged))
+            {
+                // Emit warning if exiting early.
+                std::cerr << "Solver exited due to linesearch failure." << std::endl;
+                return false;
+            }
+
+            // Compute total costs and check if we've converged.
+            total_costs = computeTotalCosts(current_operating_point);
+
+            // Record loop runtime.
+            elapsed += timer_.Toc();
+
+            // Log current iterate.
+            solver_log->addSolverIterate(current_operating_point, current_strategies,
+                                         total_costs, elapsed, has_converged);
+        }
+
+        return true;
+    }
+
+    //Debugging for trajectory drift version solve.
+
+    bool ILQSolver::solve(const OperatingPoint initial_op,
+                          const std::shared_ptr<SolverLog>& solver_log, size_t al_num_iter)
+    {
+        // Things to keep track of during each iteration.
+        size_t num_iterations = 0;
+        bool has_converged = false;
+        double elapsed = 0.0;
+
+        // 1. Obtain Initial Operating Point (Initial xs[0] is already set)
+        OperatingPoint current_operating_point = initial_op;
+        Eigen::VectorXd x0 = problem_->getInitialState();
+
+        // 2. Forward(calculate xs from time 1 to the end)
+        //current_operating_point = forward(current_operating_point, initial_strategies);
+
+        // 3. Compute total costs for initial trajectory
+        std::vector<double> total_costs = computeTotalCosts(current_operating_point);
+
+        // 4. Logging initial trajectory
+        //solver_log->addSolverIterate(current_operating_point, initial_strategies, total_costs, elapsed, has_converged);
+
+        // Maintain delta_xs and costates for linesearch.
+        std::vector<Eigen::VectorXd> delta_xs;
+        std::vector<std::vector<Eigen::VectorXd>> costates;
+        std::vector<Strategy> current_strategies;
+
+        // 5. Quadraticize costs before first iteration.
+        std::vector<std::vector<QuadraticCostApproximation>> cost_quad = computeCostQuadraticization(current_operating_point);
+
+        // 6. Linearize dynamics about the new operating point
+        std::vector<LinearDynamics> linear_dyn = computeLinearization(current_operating_point);
+
+        //Main loop
+        while(num_iterations < solver_params_.max_solver_iters && !has_converged)
+        {
+            // Start loop timer.
+            timer_.Tic();
+
+            // New iteration.
+            num_iterations++;
+
+            // 7. Solve LQ game.
+            current_strategies = lq_solver_->solve(linear_dyn, cost_quad, x0, &delta_xs, &costates);
+
+            // 8. Do Line Search (Update linear_dyn, cost_quad)
+            if (!doLineSearch(delta_xs, costates, linear_dyn, cost_quad,
+                              current_strategies, current_operating_point, has_converged))
+            {
+                // Emit warning if exiting early.
+                std::cerr << "Solver exited due to linesearch failure." << std::endl;
+                return false;
+            }
+
+            // Compute total costs and check if we've converged.
+            total_costs = computeTotalCosts(current_operating_point);
+
+            // Record loop runtime.
+            elapsed += timer_.Toc();
+
+            // Log current iterate.
+            solver_log->addSolverIterate(current_operating_point, current_strategies,
+                                         total_costs, elapsed, has_converged);
+        }
+
+        return true;
+    }
 }

@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuites tests="4" failures="1" disabled="0" errors="0" timestamp="2021-08-23T12:29:39" time="0" name="AllTests">
+  <testsuite name="OBSTACLE_LINEAR_COST" tests="4" failures="1" disabled="0" errors="0" time="0">
+    <testcase name="EVALUATE1" status="run" time="0" classname="OBSTACLE_LINEAR_COST" />
+    <testcase name="EVALUATE2" status="run" time="0" classname="OBSTACLE_LINEAR_COST" />
+    <testcase name="EVALUATE3" status="run" time="0" classname="OBSTACLE_LINEAR_COST" />
+    <testcase name="QUADRATIZE1" status="run" time="0" classname="OBSTACLE_LINEAR_COST">
+      <failure message="/home/hai/game_planner_ws/src/ros_game_planner/game_planner/test/cost/deterministic/obstacle_linear_cost_test.cpp:208&#x0A;The difference between -(grad(0)/grad(1)) and std::sqrt(3) is nan, which exceeds constants::kSmallNumber, where&#x0A;-(grad(0)/grad(1)) evaluates to nan,&#x0A;std::sqrt(3) evaluates to 1.7320508075688772, and&#x0A;constants::kSmallNumber evaluates to 0.0001." type=""><![CDATA[/home/hai/game_planner_ws/src/ros_game_planner/game_planner/test/cost/deterministic/obstacle_linear_cost_test.cpp:208
+The difference between -(grad(0)/grad(1)) and std::sqrt(3) is nan, which exceeds constants::kSmallNumber, where
+-(grad(0)/grad(1)) evaluates to nan,
+std::sqrt(3) evaluates to 1.7320508075688772, and
+constants::kSmallNumber evaluates to 0.0001.]]></failure>
+    </testcase>
+  </testsuite>
+</testsuites>

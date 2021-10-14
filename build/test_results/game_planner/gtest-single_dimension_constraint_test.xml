@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuites tests="3" failures="0" disabled="0" errors="0" timestamp="2021-08-23T12:29:39" time="0" name="AllTests">
+  <testsuite name="SINGLEDIMENSIONCONSTRAINT" tests="3" failures="0" disabled="0" errors="0" time="0">
+    <testcase name="EVALUATE" status="run" time="0" classname="SINGLEDIMENSIONCONSTRAINT" />
+    <testcase name="QUADRATICIZE" status="run" time="0" classname="SINGLEDIMENSIONCONSTRAINT" />
+    <testcase name="EVALUATE2" status="run" time="0" classname="SINGLEDIMENSIONCONSTRAINT" />
+  </testsuite>
+</testsuites>

@@ -54,14 +54,16 @@ GamePlanner::GamePlanner() : nh_(""), pnh_("~"), is_simulation_start_(false), so
 
     // Solver Params
     game_planner::ALSolverParams params;
-    params.iterative_solver_type_ = ALIterativeeSolverType::ILQ;
+    params.iterative_solver_type_ = ALIterativeeSolverType::ILQG;
     params.iterative_solver_params_.max_backtracking_steps = 100;
-    params.iterative_solver_params_.linesearch = true;
+    //params.iterative_solver_params_.linesearch = true;
+    params.iterative_solver_params_.linesearch = false;
     params.iterative_solver_params_.expected_decrease_fraction = 0.1;
     params.iterative_solver_params_.initial_alpha_scaling = 0.75;
     params.iterative_solver_params_.convergence_tolerance = 0.01;
 
     // Setup Solver
+
     AugmentedLagrangianSolver solver(problem_, params);
 
     // Initial Strategy

@@ -64,6 +64,14 @@ namespace game_planner
         bool solve(const std::vector<Strategy>& initial_strategies,
                    const std::shared_ptr<SolverLog>& solver_log);
 
+        //Warm start version solve
+        bool solve(const OperatingPoint initial_op,
+                   const std::shared_ptr<SolverLog>& solver_log);
+ 
+        //Debugging for trajectory drift
+        bool solve(const OperatingPoint initial_op,
+                   const std::shared_ptr<SolverLog>& solver_log, size_t al_num_iter);
+
     protected:
         // Line Search
         bool doLineSearch(const std::vector<Eigen::VectorXd>& delta_xs,

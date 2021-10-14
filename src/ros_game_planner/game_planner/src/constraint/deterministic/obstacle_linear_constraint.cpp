@@ -57,6 +57,8 @@ namespace game_planner
         x << input(xidx_), input(yidx_);
 
         // Compute (g*x - m)
+        //return (g.dot(x) - m);
+        //std::cout<<"(g.dot(x) - m) is: "<<(g.dot(x) - m)<<std::endl;
         return (g.dot(x) - m);
     }
 
