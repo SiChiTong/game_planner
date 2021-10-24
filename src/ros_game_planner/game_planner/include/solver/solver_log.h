@@ -53,6 +53,8 @@
 #include "utils/operating_point.h"
 #include "utils/strategy.h"
 #include "utils/types.h"
+#include "utils/quadratic_cost_approximation.h"
+#include "utils/linear_dynamics.h"
 
 namespace game_planner
 {
@@ -69,19 +71,59 @@ namespace game_planner
         Uncopyable& operator=(const Uncopyable& other);
     }; //\class Uncopyable
 
+    struct op_iter
+    {
+        const OperatingPoint op_;
+        size_t al_index_iter_;
+        size_t ilqg_index_iter;
+        std::vector<Strategy> strategy_iter;
+        std::vector<std::vector<QuadraticCostApproximation>> cost_quad_iter_;
+        std::vector<LinearDynamics> linear_dynamics_iter;
+
+        op_iter(const OperatingPoint& op, const size_t al_iter, const size_t ilqg_iter, const std::vector<Strategy>& current_strategy, const std::vector<std::vector<QuadraticCostApproximation>>& cost_quad, const std::vector<LinearDynamics> linear_dynamics):
+         op_(op),al_index_iter_(al_iter),ilqg_index_iter(ilqg_iter), strategy_iter(current_strategy), cost_quad_iter_(cost_quad), linear_dynamics_iter(linear_dynamics)
+        {
+            
+        }
+    };
+    
+
     class SolverLog : private Uncopyable
     {
     public:
         ~SolverLog() = default;
         SolverLog() {}
 
-        // Add a new solver iterate.
+        //Add a new solver iterate for cost_quad
         void addSolverIterate(const OperatingPoint& operating_point,
                               const std::vector<Strategy>& strategies,
                               const std::vector<double>& total_costs,
                               const double& cumulative_runtime,
                               const bool& was_converged,
-                              const std::vector<Eigen::MatrixXd>& covariance)
+                              const std::vector<Eigen::MatrixXd>& covariance,
+                              const std::vector<std::vector<QuadraticCostApproximation>>& cost_quad,
+                              const size_t al_iter, const size_t ilqg_iter,
+                              const std::vector<LinearDynamics>& linear_dynamics
+                              )
+        {
+            addSolverIterate(operating_point, strategies, total_costs, cumulative_runtime, was_converged,covariance);
+            cost_quad_.push_back(cost_quad);
+            op_iter p = op_iter(operating_point,al_iter,ilqg_iter,strategies,cost_quad,linear_dynamics);
+            //std::cout<<"op iter's al iter is: "<<p.al_index_iter_<<std::endl;
+            collection_iter_.push_back(p);
+            //std::cout<<"new op iter's al iter is: "<<collection_iter_.back().al_index_iter_<<std::endl;
+            
+        }
+
+
+        // Add a new solver iterate for voariance
+        void addSolverIterate(const OperatingPoint& operating_point,
+                              const std::vector<Strategy>& strategies,
+                              const std::vector<double>& total_costs,
+                              const double& cumulative_runtime,
+                              const bool& was_converged,
+                              const std::vector<Eigen::MatrixXd>& covariance
+                              )
         {
             addSolverIterate(operating_point, strategies, total_costs, cumulative_runtime, was_converged);
             covariances_.push_back(covariance);
@@ -182,6 +224,23 @@ namespace game_planner
             return operating_points_[iterate].us[time_index][player](dim);
         }
 
+        std::vector<std::vector<QuadraticCostApproximation>> getFinalcost_quad()
+        {
+            return cost_quad_.back();
+        }
+
+        const OperatingPoint get_operating_point_iter(const int num_iter)
+        {
+            return operating_points_[num_iter];
+        }
+
+        const op_iter getcollection(size_t num_iter)
+        {
+            return collection_iter_[num_iter];
+        }
+
+        size_t get_num_collection() {return collection_iter_.size();}
+
         std::vector<Eigen::MatrixXd> getPs(const size_t& iterate, const size_t& time_index) const;
         std::vector<Eigen::VectorXd> getAlphas(const size_t& iterate, const size_t& time_index) const;
         Eigen::MatrixXd getP(const size_t& iterate, const size_t& time_index, const unsigned int& player) const;
@@ -197,6 +256,10 @@ namespace game_planner
         std::vector<double> cumulative_runtimes_;
         std::vector<bool> was_converged_;
         std::vector<std::vector<Eigen::MatrixXd>> covariances_;
+        std::vector<std::vector<std::vector<QuadraticCostApproximation>>> cost_quad_;
+        std::vector<op_iter> collection_iter_;
+        
+        
     };
 }
 

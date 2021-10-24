@@ -6336,7 +6336,9 @@ ros_game_planner/game_planner/CMakeFiles/game_planner.dir/src/solver/problem.cpp
 ros_game_planner/game_planner/CMakeFiles/game_planner.dir/src/solver/problem.cpp.o: /usr/include/eigen3/Eigen/src/plugins/MatrixCwiseUnaryOps.h
 
 ros_game_planner/game_planner/CMakeFiles/game_planner.dir/src/solver/solver_log.cpp.o: /home/hai/game_planner_ws/src/ros_game_planner/game_planner/include/solver/solver_log.h
+ros_game_planner/game_planner/CMakeFiles/game_planner.dir/src/solver/solver_log.cpp.o: /home/hai/game_planner_ws/src/ros_game_planner/game_planner/include/utils/linear_dynamics.h
 ros_game_planner/game_planner/CMakeFiles/game_planner.dir/src/solver/solver_log.cpp.o: /home/hai/game_planner_ws/src/ros_game_planner/game_planner/include/utils/operating_point.h
+ros_game_planner/game_planner/CMakeFiles/game_planner.dir/src/solver/solver_log.cpp.o: /home/hai/game_planner_ws/src/ros_game_planner/game_planner/include/utils/quadratic_cost_approximation.h
 ros_game_planner/game_planner/CMakeFiles/game_planner.dir/src/solver/solver_log.cpp.o: /home/hai/game_planner_ws/src/ros_game_planner/game_planner/include/utils/strategy.h
 ros_game_planner/game_planner/CMakeFiles/game_planner.dir/src/solver/solver_log.cpp.o: /home/hai/game_planner_ws/src/ros_game_planner/game_planner/include/utils/types.h
 ros_game_planner/game_planner/CMakeFiles/game_planner.dir/src/solver/solver_log.cpp.o: /home/hai/game_planner_ws/src/ros_game_planner/game_planner/src/solver/solver_log.cpp

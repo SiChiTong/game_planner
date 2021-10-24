@@ -72,7 +72,7 @@ namespace game_planner
                 : hess_(regularization * Eigen::MatrixXd::Identity(dim, dim)),
                   grad_(Eigen::VectorXd::Zero(dim))
         {}
-
+        
         Eigen::MatrixXd hess_;
         Eigen::VectorXd grad_;
     };

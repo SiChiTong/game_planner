@@ -66,4 +66,17 @@ namespace game_planner
         std::vector<Strategy> result;
         return result;
     }
+
+    //debug version solve, check for the condition number
+    std::vector<Strategy> LQFeedbackStackelbergSolver::debug_solve(const std::vector<LinearDynamics>& linearization,
+                                    const std::vector<std::vector<QuadraticCostApproximation>> &quadraticization,
+                                    const Eigen::VectorXd& x0,
+                                    const size_t al_iter, const size_t ilqg_iter,
+                                    std::vector<Eigen::VectorXd>* delta_xs ,
+                                    std::vector<std::vector<Eigen::VectorXd>>* )
+    {
+        std::vector<Strategy> result;
+        return result;
+
+    }
 }

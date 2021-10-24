@@ -116,6 +116,15 @@ namespace game_planner
                                     std::vector<std::vector<Eigen::VectorXd>>* costates = nullptr);
 
 
+        //debug version solve, check for the condition number
+        std::vector<Strategy> debug_solve(const std::vector<LinearDynamics>& linearization,
+                                    const std::vector<std::vector<QuadraticCostApproximation>> &quadraticization,
+                                    const Eigen::VectorXd& x0,
+                                    const size_t al_iter, const size_t ilqg_iter,
+                                    std::vector<Eigen::VectorXd>* delta_xs = nullptr,
+                                    std::vector<std::vector<Eigen::VectorXd>>* costates = nullptr);
+                                    
+
     private:
         // Quadratic/linear components of value function at the current time step in
         // the dynamic program.

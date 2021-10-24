@@ -87,6 +87,17 @@ namespace game_planner
                           bool& has_converged,
                           std::vector<Eigen::MatrixXd>& covariances);
 
+        //Debug version line search
+        bool doLineSearch(const std::vector<Eigen::VectorXd>& delta_xs,
+                                  const std::vector<std::vector<Eigen::VectorXd>>& costates,
+                                  std::vector<LinearDynamics>& linear_dyn,
+                                  std::vector<std::vector<QuadraticCostApproximation>>& cost_quad,
+                                  std::vector<Strategy>& strategies,
+                                  OperatingPoint& current_operating_point,
+                                  bool& has_converged,
+                                  std::vector<Eigen::MatrixXd>& covariances,
+                                  const size_t al_iter, const size_t ilqg_iter);
+
         // Compute overall costs and set times of extreme costs.
         std::vector<double> computeTotalCosts(const OperatingPoint& current_op,
                                               const std::vector<Eigen::MatrixXd>& covariances) const;

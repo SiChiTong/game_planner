@@ -257,7 +257,7 @@ namespace game_planner
         //costquad, linear dynamics, last merit function, has_converged
         if (!solver_params_.linesearch)
         {   
-            //setup a small stepsize, try: 0.1 0.2
+            //setup a small stepsize, try: 0.05 to 0.1 to 0.2
             double current_stepsize = 0.2;
 
             //scale the strategies
@@ -509,9 +509,14 @@ namespace game_planner
         //Main loop
         size_t max_ilqg_iter = solver_params_.max_solver_iters;
         
-        if (al_num_iter == 45)
+        if (al_num_iter >= 45)
         {
-            max_ilqg_iter = 2;
+            max_ilqg_iter = 100;
+        }
+
+        if(al_num_iter==46)
+        {
+            max_ilqg_iter = 90;
         }
 
         while(num_iterations < max_ilqg_iter && !has_converged)
@@ -521,14 +526,26 @@ namespace game_planner
 
             // New iteration.
             num_iterations++;
+            
+
 
             // 7. Solve LQ game.
-            current_strategies = lq_solver_->solve(linear_dyn, cost_quad, x0, &delta_xs, &costates);
+            
+            
+            if(al_num_iter >= 45)
+            {
+                std::cout<<"current ilqg iter is: "<<num_iterations<<std::endl;
+                current_strategies = lq_solver_->debug_solve(linear_dyn, cost_quad, x0,al_num_iter,num_iterations, &delta_xs, &costates);
+            }
+            else{
+                current_strategies = lq_solver_->solve(linear_dyn, cost_quad, x0, &delta_xs, &costates);
+            }
+
 
             // 8. Do Line Search (Update linear_dyn, cost_quad)
             if (!doLineSearch(delta_xs, costates,
                               linear_dyn, cost_quad, current_strategies,
-                              current_operating_point, has_converged, covariances))
+                              current_operating_point, has_converged, covariances,al_num_iter,num_iterations))
             {
                 // Emit warning if exiting early.
                 std::cerr << "Solver exited due to linesearch failure." << std::endl;
@@ -541,12 +558,126 @@ namespace game_planner
             // Record loop runtime.
             elapsed += timer_.Toc();
 
+            //std::cout<<"al iter is: "<<al_num_iter<<std::endl;
+            //std::cout<<"ilqg iter is: "<<num_iterations<<std::endl;
             // Log current iterate.
-            solver_log->addSolverIterate(current_operating_point, current_strategies,
-                                         total_costs, elapsed, has_converged, covariances);
+            //solver_log->addSolverIterate(current_operating_point, current_strategies,
+                                        // total_costs, elapsed, has_converged, covariances,cost_quad,al_num_iter,num_iterations,linear_dyn);
+           if(al_num_iter>=45){ has_converged=false;}
+           solver_log->addSolverIterate(current_operating_point, current_strategies,
+                                         total_costs, elapsed, has_converged, covariances,cost_quad,al_num_iter,num_iterations,linear_dyn);
         }
 
         return true;
     }
+
+
+
+    // Debug version Line Search
+    bool ILQGSolver::doLineSearch(const std::vector<Eigen::VectorXd>& delta_xs,
+                                  const std::vector<std::vector<Eigen::VectorXd>>& costates,
+                                  std::vector<LinearDynamics>& linear_dyn,
+                                  std::vector<std::vector<QuadraticCostApproximation>>& cost_quad,
+                                  std::vector<Strategy>& strategies,
+                                  OperatingPoint& current_operating_point,
+                                  bool& has_converged,
+                                  std::vector<Eigen::MatrixXd>& covariances,
+                                  const size_t al_iter, const size_t ilqg_iter)
+    {
+        
+        
+        //For no line search. use small step sizes. update current strategies, operating point,
+        //costquad, linear dynamics, last merit function, has_converged
+        if (!solver_params_.linesearch)
+        {   
+             double current_stepsize;
+            //setup a small stepsize, try: 0.05 to 0.1 to 0.2
+           
+            current_stepsize = 0.2;
+            if(al_iter==45&&ilqg_iter>=4) {current_stepsize = 0.1;}
+            
+
+            //scale the strategies
+            scaleByLineSearchParam(current_stepsize, strategies);
+
+            //Forward to update op
+            const OperatingPoint last_operating_point(current_operating_point);
+
+            current_operating_point = forward(last_operating_point, strategies);
+
+            //Update linear dyanmics based on current operating point
+            computeLinearization(current_operating_point, linear_dyn);
+
+            //Update cost_quad based on current operating point
+                       
+            covariances = computeCovariance(current_operating_point, linear_dyn);
+
+            
+            computeCostQuadraticization(current_operating_point, covariances, cost_quad);
+
+            //update current merit value
+            const double current_merit_function_value = computeMeritFunction(current_operating_point, cost_quad);
+            
+            //update has_converged and last_merit_value
+            has_converged = checkConverged(current_merit_function_value);
+            last_merit_function_value_ = current_merit_function_value;
+
+            
+            return true;
+
+        }
+        
+        // 1. Precompute expected decrease before we do anything else.
+        double expected_decrease = computeExpectedDecrease(strategies, delta_xs, costates, linear_dyn, cost_quad);
+        
+        // 2. Scale ff term by Line Search Parameters
+        scaleByLineSearchParam(solver_params_.initial_alpha_scaling, strategies);
+
+        // 3. Forward
+        const OperatingPoint last_operating_point(current_operating_point);
+        double current_stepsize = solver_params_.initial_alpha_scaling;
+        //double current_stepsize = 0.1;
+        //std::cout<<"current_stepsize"<<current_stepsize;
+        current_operating_point = forward(last_operating_point, strategies);
+
+        // Keep reducing alphas until we satisfy the Armijo condition.
+        for (size_t ii = 0; ii < solver_params_.max_backtracking_steps; ii++)
+        {
+            // 4. Compute Covariance regarding current operating point
+            covariances = computeCovariance(current_operating_point, linear_dyn);
+
+            // 5. Quadraticization
+            computeCostQuadraticization(current_operating_point, covariances, cost_quad);
+
+            // 6. Compute merit function value.
+            const double current_merit_function_value = computeMeritFunction(current_operating_point, cost_quad);
+
+            // 7. Check Armijo condition.
+            if (checkArmijoCondition(current_merit_function_value, current_stepsize, expected_decrease))
+            {
+                // Success! Update cached terms and check convergence.
+                has_converged = checkConverged(current_merit_function_value);
+                last_merit_function_value_ = current_merit_function_value;
+
+                // Update linearized dynamics
+                computeLinearization(current_operating_point, linear_dyn);
+
+                return true;
+            }
+
+            // 8. Update current_step_size
+            current_stepsize *= solver_params_.geometric_alpha_scaling;
+
+            // 9. Scale down the alphas and update operating point and linear dynamics. Try again
+            scaleByLineSearchParam(solver_params_.geometric_alpha_scaling, strategies);
+            current_operating_point = forward(last_operating_point, strategies);
+            computeLinearization(current_operating_point, linear_dyn);
+        }
+
+        // Output a warning. Solver should revert to last valid operating point.
+        std::cerr << "Exceeded maximum number of backtracking steps." << std::endl;
+        return false;
+    }
+
 
 }

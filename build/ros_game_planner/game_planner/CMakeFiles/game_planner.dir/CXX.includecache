@@ -329,6 +329,10 @@ utils/strategy.h
 /home/hai/game_planner_ws/src/ros_game_planner/game_planner/include/solver/utils/strategy.h
 utils/types.h
 /home/hai/game_planner_ws/src/ros_game_planner/game_planner/include/solver/utils/types.h
+utils/quadratic_cost_approximation.h
+/home/hai/game_planner_ws/src/ros_game_planner/game_planner/include/solver/utils/quadratic_cost_approximation.h
+utils/linear_dynamics.h
+/home/hai/game_planner_ws/src/ros_game_planner/game_planner/include/solver/utils/linear_dynamics.h
 
 /home/hai/game_planner_ws/src/ros_game_planner/game_planner/include/utils/linear_dynamics.h
 utils/types.h

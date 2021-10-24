@@ -93,7 +93,7 @@ namespace game_planner
 
         //transform to augmented lagrangian cost
         adaptALConstraint(time_id, g, &grad_x1, &hess_x1x1, &grad_y1, &hess_y1y1, &hess_x1y1);
-
+        
         //Cost for player1 and player2
         grad(xidx1_) += grad_x1;
         grad(xidx2_) -= grad_x1;

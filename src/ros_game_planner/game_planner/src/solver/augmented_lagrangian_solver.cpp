@@ -68,11 +68,12 @@ namespace game_planner
         
         //std::cout<<"max_constraint_error, first one "<<(max_constraint_error )<<std::endl;
         //Something becomes crazy between iteration 44 and iteration 45
-        while (num_iter < 45)//params_.max_al_solver_iters)
+        while (num_iter < 46)//params_.max_al_solver_iters)
         {
             // 4. Check the constraint and update the augmented lagrangian parameter(This can be parallelize)
             //std::cout<<"hello world!"<<std::endl;
             num_iter++;   
+            std::cout<<"current iteration is: "<<num_iter<<std::endl;
             max_constraint_error = -constants::kInfinity;
             const OperatingPoint& op = solver_log->getFinalOperatingPoint();
             for (auto& pc : unconstrained_solver_->getProblem().getPlayerCosts())
@@ -145,16 +146,122 @@ namespace game_planner
                 BaseALConstraint::scaleMu(params_.geometric_mu_downscaling);
             }
             
-            std::cout<<"current iteration is: "<<num_iter<<std::endl;
+            
             
             
         } // end while
 
 
+        //std::vector<op_iter> collection_iter = solver_log->getcollection();
+        int size = static_cast<int>(solver_log->get_num_collection());
+
+
+        std::cout<<"The size of collection is: "<<size<<std::endl;
+        op_iter final_collection = solver_log->getcollection(size-1);
+        op_iter f1_collection = solver_log -> getcollection(size-2);
+        op_iter f2_collection = solver_log -> getcollection(size-3);
+        //std::vector<std::vector<QuadraticCostApproximation>> final_cost_quad = solver_log->getFinalcost_quad();
+        
+        for(size_t time_step =0; time_step<time::kNumTimeSteps;time_step++)
+        {   
+            //std::cout<<"current time step is: "<<time_step<<std::endl;
+            //std::cout<<"[1] al index : "<<f1_collection.al_index_iter_<<", ilqg index: "<<f1_collection.ilqg_index_iter<<std::endl;
+            //std::cout<<"[2] al index  :"<<f2_collection.al_index_iter_<<", iqlg index: "<<f2_collection.ilqg_index_iter<<std::endl;
+            //std::cout<<"[3] al index :"<<final_collection.al_index_iter_<<", ilgq iter: "<<final_collection.ilqg_index_iter<<std::endl;
+            //std::cout<<"The difference of alphas for player 1:[1]-[2] "<<std::endl;
+            //std::cout<<"Player 0's alpha for [1]"<<std::endl;
+            //std::cout<<f1_collection.strategy_iter[0].alphas[time_step]<<std::endl;
+            //std::cout<<"Player 0's alpha for [2]"<<std::endl;
+            //std::cout<<f2_collection.strategy_iter[0].alphas[time_step]<<std::endl;
+            //std::cout<<"Player 0's costquad state grad for [3] "<<std::endl;
+            //std::cout<<f1_collection.cost_quad_iter_[time_step][0].state_.grad_<<std::endl;
+            //std::cout<<"Player 0's costquad state hessian for [3] "<<std::endl;
+            //std::cout<<f1_collection.cost_quad_iter_[time_step][0].state_.hess_<<std::endl;
+            //std::cout<<"Player 0's costquad control grad for itself at [3] "<<std::endl;
+            //std::cout<<f1_collection.cost_quad_iter_[time_step][0].control_.at(0).grad_<<std::endl;
+            //std::cout<<"Player 0's costquad control hessian for itself at [3] "<<std::endl;
+            //std::cout<<f1_collection.cost_quad_iter_[time_step][0].control_.at(0).hess_<<std::endl;
+            //std::cout<<"player 0's P for [3] "<<std::endl;
+            //std::cout<<final_collection.strategy_iter[0].Ps[time_step]<<std::endl;
+            //std::cout<<"Player 0's alpha for [3]"<<std::endl;
+            //std::cout<<final_collection.strategy_iter[0].alphas[time_step]<<std::endl;
+            //std::cout<<"Player 0's costquad state grad for [2] "<<std::endl;
+            //std::cout<<f2_collection.cost_quad_iter_[time_step][0].state_.grad_<<std::endl;
+            //std::cout<<"Player 0's costquad state hessian for [2] "<<std::endl;
+            //std::cout<<f2_collection.cost_quad_iter_[time_step][0].state_.hess_<<std::endl;
+            //std::cout<<"Player 0's costquad control grad for itself at [2] "<<std::endl;
+            //std::cout<<f2_collection.cost_quad_iter_[time_step][0].control_.at(0).grad_<<std::endl;
+            //std::cout<<"Player 0's costquad control hessian for itself at [2] "<<std::endl;
+            //std::cout<<f2_collection.cost_quad_iter_[time_step][0].control_.at(0).hess_<<std::endl;
+            //std::cout<<"Linear dynamics for [2], A: "<<std::endl;
+            //std::cout<<f2_collection.linear_dynamics_iter[time_step].A<<std::endl;
+            //std::cout<<"Linear dynamics for [2], B: "<<std::endl;
+            //std::cout<<f2_collection.linear_dynamics_iter[time_step].Bs[0]<<std::endl;
+            //std::cout<<f2_collection.linear_dynamics_iter[time_step].Bs[1]<<std::endl;
+
+
+
+
+            //std::cout<<"Player 1's alpha for [1]"<<std::endl;
+            //std::cout<<f1_collection.strategy_iter[1].alphas[time_step]<<std::endl;
+            //std::cout<<"Player 1's alpha for [2]"<<std::endl;
+            //std::cout<<f2_collection.strategy_iter[1].alphas[time_step]<<std::endl;
+            //std::cout<<"Player 1's apha for [3]"<<std::endl;
+            //std::cout<<final_collection.strategy_iter[1].alphas[time_step]<<std::endl;
+            //std::cout<<"player 1's P for [3] "<<std::endl;
+            //std::cout<<final_collection.strategy_iter[1].Ps[time_step]<<std::endl;
+            //std::cout<<"Player 1's costquad state grad for [3] "<<std::endl;
+            //std::cout<<f1_collection.cost_quad_iter_[time_step][1].state_.grad_<<std::endl;
+            //std::cout<<"Player 1's costquad state hessian for [3] "<<std::endl;
+            //std::cout<<f1_collection.cost_quad_iter_[time_step][1].state_.hess_<<std::endl;
+            //std::cout<<"Player 1's costquad control grad for itself at [3] "<<std::endl;
+            //std::cout<<f1_collection.cost_quad_iter_[time_step][1].control_.at(1).grad_<<std::endl;
+            //std::cout<<"Player 1's costquad control hessian for itself at [3] "<<std::endl;
+            //std::cout<<f1_collection.cost_quad_iter_[time_step][1].control_.at(1).hess_<<std::endl;            
+            //std::cout<<f2_collection.strategy_iter[0].alphas[time_step]-f1_collection.strategy_iter[0].alphas[time_step]<<std::endl;
+            //std::cout<<"The difference of controls for player 1:[1]-[2] "<<std::endl;
+            //std::cout<<f2_collection.op_.us[time_step][0]-f1_collection.op_.us[time_step][0]<<std::endl;
+            //std::cout<<"The difference of controls for player 2:[1]-[2] "<<std::endl;
+            //std::cout<<f2_collection.op_.us[time_step][1]-f1_collection.op_.us[time_step][1]<<std::endl;
+            //std::cout<<"Player 1's costquad state grad for [2] "<<std::endl;
+            //std::cout<<f2_collection.cost_quad_iter_[time_step][1].state_.grad_<<std::endl;
+            //std::cout<<"Player 1's costquad state hessian for [2] "<<std::endl;
+            //std::cout<<f2_collection.cost_quad_iter_[time_step][1].state_.hess_<<std::endl;
+            //std::cout<<"Player 1's costquad control grad for itself at [2] "<<std::endl;
+            //std::cout<<f2_collection.cost_quad_iter_[time_step][1].control_.at(1).grad_<<std::endl;
+            //std::cout<<"Player 1's costquad control hessian for itself at [2] "<<std::endl;
+            //std::cout<<f2_collection.cost_quad_iter_[time_step][1].control_.at(1).hess_<<std::endl;
+            //std::cout<<"player 0's P for [3] "<<std::endl;
+            //std::cout<<final_collection.strategy_iter[0].Ps[time_step]<<std::endl;
+            //std::cout<<"Player 0's alpha for [3]"<<std::endl;
+            //std::cout<<final_collection.strategy_iter[0].alphas[time_step]<<std::endl;
+            //std::cout<<"Player 1's apha for [3]"<<std::endl;
+            //std::cout<<final_collection.strategy_iter[1].alphas[time_step]<<std::endl;
+            //std::cout<<"player 1's P for [3] "<<std::endl;
+            //std::cout<<final_collection.strategy_iter[1].Ps[time_step]<<std::endl;
+            if(time_step == 18)
+            {
+                
+            std::cout<<"[2] al index :"<<f1_collection.al_index_iter_<<", ilgq iter: "<<f1_collection.ilqg_index_iter<<std::endl;
+            std::cout<<"current time step is: "<<time_step<<std::endl;
+            std::cout<<"player 0's P for [2] "<<std::endl;
+            std::cout<<f1_collection.strategy_iter[0].Ps[time_step]<<std::endl;
+            std::cout<<"Player 0's alpha for [2]"<<std::endl;
+            std::cout<<f1_collection.strategy_iter[0].alphas[time_step]<<std::endl;
+            std::cout<<"Player 1's apha for [2]"<<std::endl;
+            std::cout<<f1_collection.strategy_iter[1].alphas[time_step]<<std::endl;
+            std::cout<<"player 1's P for [2] "<<std::endl;
+            std::cout<<f1_collection.strategy_iter[1].Ps[time_step]<<std::endl;
+
+
+            }
+        }
+
         //std::cout<<"max_constraint_error: "<<max_constraint_error<<"   max_constraint name: "<<max_constraint_name<<std::endl;
         //std::cout<<"constraint_tolerance: "<<params_.constraint_error_tolerance<<std::endl;
                     //print out all the constraint values
-        const auto& op = solver_log->getFinalOperatingPoint();
+        //const auto& op = solver_log->getFinalOperatingPoint();
+        const auto& op = f2_collection.op_;
         for(auto& pc : unconstrained_solver_->getProblem().getPlayerCosts())
         {
             for (size_t kk = 0; kk < op.xs.size(); kk++)
